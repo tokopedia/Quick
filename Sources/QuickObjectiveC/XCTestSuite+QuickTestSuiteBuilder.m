@@ -16,9 +16,9 @@
  In order to ensure we can correctly build dynamic test suites, we need to
  replace some of the default test suite constructors.
  */
-+ (void)load {
-    Method testCaseWithName = class_getClassMethod(self, @selector(testSuiteForTestCaseWithName:));
-    Method hooked_testCaseWithName = class_getClassMethod(self, @selector(qck_hooked_testSuiteForTestCaseWithName:));
+__attribute__((constructor)) static void initialize_XCTestSuite(void) {
+    Method testCaseWithName = class_getClassMethod([XCTestSuite class], @selector(testSuiteForTestCaseWithName:));
+    Method hooked_testCaseWithName = class_getClassMethod([XCTestSuite class], @selector(qck_hooked_testSuiteForTestCaseWithName:));
     method_exchangeImplementations(testCaseWithName, hooked_testCaseWithName);
 }
 
